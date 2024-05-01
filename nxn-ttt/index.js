@@ -47,10 +47,12 @@ class Game {
         this.scores[this.size + j] += (player === "p1" ? 1 : -1);
 
         // add score to the diagonal
-        if (i === j)
+        if (i === j) {
             this.scores[this.scores.length - 2] += (player === "p1" ? 1 : -1);
-        if ((this.size - 1) - i === j || -j)
+        }
+        if ((this.size - 1) - i === j || (this.size - 1) - i === -j) {
             this.scores[this.scores.length - 1] += (player === "p1" ? 1 : -1);
+        }
     }
 }
 
@@ -58,9 +60,30 @@ let game = new Game(Number(process.argv[2] ?? 3));
 
 game.printBoard();
 console.log(game.scores);
+
+console.log("---------------------------------------");
 game.addEntry(2, 0, "p1");
 game.printBoard();
 console.log(game.scores);
+console.log("---------------------------------------");
+
+console.log("---------------------------------------");
+game.addEntry(1, 1, "p2");
+game.printBoard();
+console.log(game.scores);
+console.log("---------------------------------------");
+
+console.log("---------------------------------------");
+game.addEntry(2, 2, "p1");
+game.printBoard();
+console.log(game.scores);
+console.log("---------------------------------------");
+
+console.log("---------------------------------------");
+game.addEntry(0, 0, "p2");
+game.printBoard();
+console.log(game.scores);
+console.log("---------------------------------------");
 
 /* const rl = readline.createInterface({
     input: process.stdin,
