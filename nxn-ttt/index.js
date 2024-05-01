@@ -26,32 +26,39 @@ class Game {
         });
     }
 
+    #gameWon(i) {
+        return Math.abs(this.scores[i]) === this.size;
+    }
+
     /**
      * 
      * @param {*} i row index
      * @param {*} j column index
      */
     addEntry(i, j, player) {
+        const { size, board, scores } = this;
         /* add to board */
-        this.board[i][j] = player === "p1" ? "x" : "o";
+        board[i][j] = player === "p1" ? "x" : "o";
 
-        /* add to helper:
-            +1 for player1, -1 for player2
-            if any score is n, player1 won
-            if any score is -n player 2 won
-        */
-        // add score to the row
-        this.scores[i] += (player === "p1" ? 1 : -1);
+        /* add score to the row */
+        scores[i] += (player === "p1" ? 1 : -1);
+        if (this.#gameWon(i)) return player;
 
-        // add score to the column
-        this.scores[this.size + j] += (player === "p1" ? 1 : -1);
+        /* add score to the column */
+        scores[size + j] += (player === "p1" ? 1 : -1);
+        if (this.#gameWon(size + j)) return player;
 
-        // add score to the diagonal
+        /* add score to the diagonal */
+        // check for first diagonal
         if (i === j) {
-            this.scores[this.scores.length - 2] += (player === "p1" ? 1 : -1);
+            scores[scores.length - 2] += (player === "p1" ? 1 : -1);
+            if (this.#gameWon(scores.length - 2)) return player;
         }
-        if ((this.size - 1) - i === j || (this.size - 1) - i === -j) {
-            this.scores[this.scores.length - 1] += (player === "p1" ? 1 : -1);
+
+        // check for second diagonal
+        if (Math.abs(size - 1) - i === j) {
+            scores[scores.length - 1] += (player === "p1" ? 1 : -1);
+            if (this.#gameWon(scores.length - 1)) return player;
         }
     }
 }
@@ -80,7 +87,7 @@ console.log(game.scores);
 console.log("---------------------------------------");
 
 console.log("---------------------------------------");
-game.addEntry(0, 0, "p2");
+console.log(game.addEntry(0, 0, "p2"));
 game.printBoard();
 console.log(game.scores);
 console.log("---------------------------------------");
