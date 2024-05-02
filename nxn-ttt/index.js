@@ -8,13 +8,15 @@ const console = require('console');
 class Game {
     constructor(size) {
         this.size = size;
-        //2D array with the inner arrays being interpreted as rows
+        // 2D array with the inner arrays being interpreted as rows
         this.board = new Array(size).fill(null).map(() => new Array(size).fill('_'));
 
-        //array to store the "score" of every row [0 - size-1], column [size - 2*size-1] and diagonal (last 2 elements)
+        // array to store the "score" of every row [0 - size-1], column [size - 2*size-1] and diagonal (last 2 elements)
+        // if a score is == size or == -size, either player1 or player2 accordingly have won
         this.scores = new Array(2 * size + 2).fill(0);
     }
 
+    //TBD: do this properly, as js logs arrays > 6 not in a single line
     printBoard() {
         let s = " ";
         for (let i = 0; i < this.size; i++) {
@@ -34,9 +36,14 @@ class Game {
      * 
      * @param {*} i row index
      * @param {*} j column index
+     * @returns {string|undefined|null} - player name, if a player has won by this entry, 
+     *         - nothing (undefined) if game isn't won yet, 
+     *         - null if the entry isn't valid
      */
     addEntry(i, j, player) {
         const { size, board, scores } = this;
+        if (board[i][j] !== '_' || i >= size || j >= size) return null;
+
         /* add to board */
         board[i][j] = player === "p1" ? "x" : "o";
 
@@ -92,12 +99,19 @@ game.printBoard();
 console.log(game.scores);
 console.log("---------------------------------------");
 
+console.log("---------------------------------------");
+console.log(game.addEntry(2, 1, "p1"));
+game.printBoard();
+console.log(game.scores);
+console.log("---------------------------------------");
+
 /* const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
 });
 
-rl.question(`What's your name?`, (i, j) => {
-    console.log(`Hi ${i, j}!`,);
+rl.question(`What's your name?`, args => {
+    game.printBoard();
+    console.log(args);
     rl.close();
 }); */
