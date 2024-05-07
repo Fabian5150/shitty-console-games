@@ -16,16 +16,17 @@ class Game {
         this.scores = new Array(2 * size + 2).fill(0);
     }
 
-    //TBD: do this properly, as js logs arrays > 6 not in a single line
+    /* TBD: fix aligment for double diget numbers */
     printBoard() {
-        let s = " ";
-        for (let i = 0; i < this.size; i++) {
-            s += "    " + i;
-        }
-        console.log(s);
-        this.board.forEach((row, index) => {
-            console.log(index, row);
-        });
+        /*
+            Is this good code? No.
+            Is it readable? No.
+            Is it fun? Hell yeah.
+        */
+        console.log(
+            `   ${Array.from(this.board, (_, i) => i).join('  ')}\n` +
+            this.board.map((row, i) => `${i} ${row.map(field => `[${field}]`).join('')}\n`).join('')
+        );
     }
 
     #gameWon(i) {
@@ -37,7 +38,7 @@ class Game {
      * @param {*} i row index
      * @param {*} j column index
      * @returns {string|undefined|null} - player name, if a player has won by this entry, 
-     *         - nothing (undefined) if game isn't won yet, 
+     *         - nothing (undefined) if the game isn't won yet, 
      *         - null if the entry isn't valid
      */
     addEntry(i, j, player) {
