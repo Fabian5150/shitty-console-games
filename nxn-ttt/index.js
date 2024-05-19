@@ -20,11 +20,14 @@ class Game {
         this.entries = 0;
     }
 
-    /* TBD: fix aligment for double digit numbers */
     getBoard() {
+        const { size, board } = this;
+
+        const digits = (size-1).toString().length;
+
         return (
-            `   ${Array.from(this.board, (_, i) => i).join('  ')}\n` +
-            this.board.map((row, i) => `${i} ${row.map(field => `[${field}]`).join('')}\n`).join('')
+            `  ${"".padStart(digits, " ")}${Array.from(board, (_, i) => i.toString().padStart(digits,"0")).join('  ')}\n` +
+            board.map((row, i) => `${i.toString().padStart(digits,"0")} ${row.map(field => `[${field}]`).join(''.padStart(digits-1, " "))}\n`).join('')
         );
     }
 
@@ -97,7 +100,7 @@ const playersTurn = (player) => {
 
     game.printBoard();
 
-    if(entry === player) console.log(`Congratualtions, ${player} has won the game!`);
+    if(entry === player) console.log(`Congratulations, ${player} has won the game!`);
     if(entry === -1) console.log("Looks like the game is over and nobody won. :/")
 
     return entry;
