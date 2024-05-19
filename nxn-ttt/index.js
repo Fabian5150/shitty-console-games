@@ -17,6 +17,7 @@ class Game {
         // array to store the "score" of every row [0 - size-1], column [size - 2*size-1] and diagonal (last 2 elements)
         // if a score is == size or == -size, either player1 or player2 accordingly have won
         this.scores = new Array(2 * size + 2).fill(0);
+        this.entries = 0;
     }
 
     /* TBD: fix aligment for double digit numbers */
@@ -39,10 +40,11 @@ class Game {
      * 
      * @param {*} i row index
      * @param {*} j column index
-     * @returns {string|undefined|null} 
+     * @returns {string|undefined|null|-1} 
      *         - player name, if a player has won by this entry, 
      *         - nothing (undefined) if the game isn't won yet, 
      *         - null if the entry isn't valid
+     *         - -1 if the game is over and nobody won
      */
     addEntry(i, j, player) {
         const { size, board, scores } = this;
@@ -71,6 +73,9 @@ class Game {
             scores[scores.length - 1] += (player === PLAYER1 ? 1 : -1);
             if (this.#gameWon(scores.length - 1)) return player;
         }
+    
+        this.entries++;
+        if(this.entries === size * size) return -1;
     }
 }
 
@@ -86,18 +91,23 @@ const playersTurn = (player) => {
     const entry = game.addEntry(Number(field[0]), Number(field[1]), player);
     
     if(entry === null){
-        console.log("Invald input or field already taken :/ Please try again.");
+        console.log("Invald input or field already taken :/ Please try again.\n");
         return playersTurn(player);
     }
 
     game.printBoard();
 
     if(entry === player) console.log(`Congratualtions, ${player} has won the game!`);
+    if(entry === -1) console.log("Looks like the game is over and nobody won. :/")
+
     return entry;
 }
 
 game.printBoard();
 while(true){
-    if (playersTurn(PLAYER1) === PLAYER1) break;
-    if (playersTurn(PLAYER2) === PLAYER2) break;
+    const turnP1 = playersTurn(PLAYER1);
+    if(turnP1 === PLAYER1 || turnP1 === -1) break;
+    
+    const turnP2 = playersTurn(PLAYER2);
+    if(turnP2 === PLAYER2 || turnP2 === -1) break;
 }
