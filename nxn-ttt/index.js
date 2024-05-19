@@ -29,7 +29,6 @@ class Game {
 
     printBoard() {
         console.log(this.getBoard());
-        /* TEMPORARY */console.log(this.scores);
     }
 
     #gameWon(i) {
@@ -87,19 +86,18 @@ const playersTurn = (player) => {
     const entry = game.addEntry(Number(field[0]), Number(field[1]), player);
     
     if(entry === null){
-        // => input was invalid
         console.log("Invald input or field already taken :/ Please try again.");
         return playersTurn(player);
     }
 
     game.printBoard();
+
+    if(entry === player) console.log(`Congratualtions, ${player} has won the game!`);
     return entry;
 }
 
 game.printBoard();
-//while(true){
-    /* if (playersTurn(PLAYER1) === PLAYER1) break;
-    if (playersTurn(PLAYER2) === PLAYER2) break; */
-    console.log(playersTurn(PLAYER1));
-    // console.log(playersTurn(PLAYER2));
-//}
+while(true){
+    if (playersTurn(PLAYER1) === PLAYER1) break;
+    if (playersTurn(PLAYER2) === PLAYER2) break;
+}
