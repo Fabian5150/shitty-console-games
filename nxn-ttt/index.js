@@ -1,9 +1,12 @@
 // eslint-disable-next-line no-undef
 const process = require('process');
 // eslint-disable-next-line no-undef
-const readline = require('node:readline');
+const readlineSync = require('readline-sync');
 // eslint-disable-next-line no-undef
 const console = require('console');
+
+const PLAYER1 = "player 1";
+const PLAYER2 = "player 2";
 
 class Game {
     constructor(size) {
@@ -16,7 +19,7 @@ class Game {
         this.scores = new Array(2 * size + 2).fill(0);
     }
 
-    /* TBD: fix aligment for double diget numbers */
+    /* TBD: fix aligment for double digit numbers */
     getBoard() {
         return (
             `   ${Array.from(this.board, (_, i) => i).join('  ')}\n` +
@@ -25,7 +28,8 @@ class Game {
     }
 
     printBoard() {
-        console.log(this.getBoard);
+        console.log(this.getBoard());
+        /* TEMPORARY */console.log(this.scores);
     }
 
     #gameWon(i) {
@@ -45,26 +49,26 @@ class Game {
         if (board[i][j] !== '_' || i >= size || j >= size) return null;
 
         /* add to board */
-        board[i][j] = player === "p1" ? "x" : "o";
+        board[i][j] = player === PLAYER1 ? "x" : "o";
 
         /* add score to the row */
-        scores[i] += (player === "p1" ? 1 : -1);
+        scores[i] += (player === PLAYER1 ? 1 : -1);
         if (this.#gameWon(i)) return player;
 
         /* add score to the column */
-        scores[size + j] += (player === "p1" ? 1 : -1);
+        scores[size + j] += (player === PLAYER1 ? 1 : -1);
         if (this.#gameWon(size + j)) return player;
 
         /* add score to the diagonal */
         // check for first diagonal
         if (i === j) {
-            scores[scores.length - 2] += (player === "p1" ? 1 : -1);
+            scores[scores.length - 2] += (player === PLAYER1 ? 1 : -1);
             if (this.#gameWon(scores.length - 2)) return player;
         }
 
         // check for second diagonal
         if (Math.abs(size - 1) - i === j) {
-            scores[scores.length - 1] += (player === "p1" ? 1 : -1);
+            scores[scores.length - 1] += (player === PLAYER1 ? 1 : -1);
             if (this.#gameWon(scores.length - 1)) return player;
         }
     }
@@ -74,13 +78,27 @@ let game = new Game(Number(process.argv[2] ?? 3));
 
 /* ---------------- TAKING USER INPUT ------------------ */
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
+const playersTurn = (player) => {
+    console.log(`It's ${player}'s turn!`);
+    const _field = readlineSync.question("Which field to you choose? <row> <column>\n");
+    
+    const field = _field.trim().replace(/\s+/g, " ").split(" ");
+    const entry = game.addEntry(field[0], field[1], player);
+    
+    if(entry === null){
+        // => input was invalid
+        console.log("Invald input or field already taken :/ Please try again.");
+        return playersTurn(player);
+    }
 
-rl.question(`What's your name?`, args => {
     game.printBoard();
-    console.log(args);
-    rl.close();
-});
+    return entry;
+}
+
+game.printBoard();
+while(true){
+    /* if (playersTurn(PLAYER1) === PLAYER1) break;
+    if (playersTurn(PLAYER2) === PLAYER2) break; */
+    console.log(playersTurn(PLAYER1));
+    console.log(playersTurn(PLAYER2));
+}
