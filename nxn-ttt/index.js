@@ -79,9 +79,9 @@ class Game {
     }
 }
 
-let game = new Game(Number(process.argv[2] ?? 3));
+const game = new Game((isNaN(process.argv[2]) || process.argv[2] === 0) ? 3 : Math.abs(process.argv[2]));
 
-/* ---------------- TAKING USER INPUT ------------------ */
+/* ---------------- TAKE USER INPUT ------------------ */
 
 const playersTurn = (player) => {
     console.log(`It's ${player}'s turn!`);
