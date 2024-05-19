@@ -17,16 +17,15 @@ class Game {
     }
 
     /* TBD: fix aligment for double diget numbers */
-    printBoard() {
-        /*
-            Is this good code? No.
-            Is it readable? No.
-            Is it fun? Hell yeah.
-        */
-        console.log(
+    getBoard() {
+        return (
             `   ${Array.from(this.board, (_, i) => i).join('  ')}\n` +
             this.board.map((row, i) => `${i} ${row.map(field => `[${field}]`).join('')}\n`).join('')
         );
+    }
+
+    printBoard() {
+        console.log(this.getBoard);
     }
 
     #gameWon(i) {
@@ -73,40 +72,9 @@ class Game {
 
 let game = new Game(Number(process.argv[2] ?? 3));
 
-game.printBoard();
-console.log(game.scores);
+/* ---------------- TAKING USER INPUT ------------------ */
 
-console.log("---------------------------------------");
-game.addEntry(2, 0, "p1");
-game.printBoard();
-console.log(game.scores);
-console.log("---------------------------------------");
-
-console.log("---------------------------------------");
-game.addEntry(1, 1, "p2");
-game.printBoard();
-console.log(game.scores);
-console.log("---------------------------------------");
-
-console.log("---------------------------------------");
-game.addEntry(2, 2, "p1");
-game.printBoard();
-console.log(game.scores);
-console.log("---------------------------------------");
-
-console.log("---------------------------------------");
-console.log(game.addEntry(0, 0, "p2"));
-game.printBoard();
-console.log(game.scores);
-console.log("---------------------------------------");
-
-console.log("---------------------------------------");
-console.log(game.addEntry(2, 1, "p1"));
-game.printBoard();
-console.log(game.scores);
-console.log("---------------------------------------");
-
-/* const rl = readline.createInterface({
+const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
 });
@@ -115,4 +83,4 @@ rl.question(`What's your name?`, args => {
     game.printBoard();
     console.log(args);
     rl.close();
-}); */
+});
