@@ -57,8 +57,8 @@ class Game {
         if (this.#gameWon(i)) return player;
 
         /* add score to the column */
-        /* scores[size + j] += (player === PLAYER1 ? 1 : -1);
-        if (this.#gameWon(size + j)) return player; */
+        scores[size + j] += (player === PLAYER1 ? 1 : -1);
+        if (this.#gameWon(size + j)) return player;
 
         /* add score to the diagonal */
         // check for first diagonal
@@ -68,7 +68,7 @@ class Game {
         }
 
         // check for second diagonal
-        if (Math.abs(size - 1 - i) == j) {
+        if (Math.abs(size - 1 - i) === j) {
             scores[scores.length - 1] += (player === PLAYER1 ? 1 : -1);
             if (this.#gameWon(scores.length - 1)) return player;
         }
@@ -84,7 +84,7 @@ const playersTurn = (player) => {
     const _field = readlineSync.question("Which field to you choose? <row> <column>\n");
     
     const field = _field.trim().replace(/\s+/g, " ").split(" ");
-    const entry = game.addEntry(field[0], field[1], player);
+    const entry = game.addEntry(Number(field[0]), Number(field[1]), player);
     
     if(entry === null){
         // => input was invalid
