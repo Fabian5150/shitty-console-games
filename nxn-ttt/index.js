@@ -40,13 +40,14 @@ class Game {
      * 
      * @param {*} i row index
      * @param {*} j column index
-     * @returns {string|undefined|null} - player name, if a player has won by this entry, 
+     * @returns {string|undefined|null} 
+     *         - player name, if a player has won by this entry, 
      *         - nothing (undefined) if the game isn't won yet, 
      *         - null if the entry isn't valid
      */
     addEntry(i, j, player) {
         const { size, board, scores } = this;
-        if (board[i][j] !== '_' || i >= size || j >= size) return null;
+        if (i >= size || j >= size || board[i][j] !== '_' ) return null;
 
         /* add to board */
         board[i][j] = player === PLAYER1 ? "x" : "o";
@@ -56,8 +57,8 @@ class Game {
         if (this.#gameWon(i)) return player;
 
         /* add score to the column */
-        scores[size + j] += (player === PLAYER1 ? 1 : -1);
-        if (this.#gameWon(size + j)) return player;
+        /* scores[size + j] += (player === PLAYER1 ? 1 : -1);
+        if (this.#gameWon(size + j)) return player; */
 
         /* add score to the diagonal */
         // check for first diagonal
@@ -67,7 +68,7 @@ class Game {
         }
 
         // check for second diagonal
-        if (Math.abs(size - 1) - i === j) {
+        if (Math.abs(size - 1 - i) == j) {
             scores[scores.length - 1] += (player === PLAYER1 ? 1 : -1);
             if (this.#gameWon(scores.length - 1)) return player;
         }
@@ -96,9 +97,9 @@ const playersTurn = (player) => {
 }
 
 game.printBoard();
-while(true){
+//while(true){
     /* if (playersTurn(PLAYER1) === PLAYER1) break;
     if (playersTurn(PLAYER2) === PLAYER2) break; */
     console.log(playersTurn(PLAYER1));
-    console.log(playersTurn(PLAYER2));
-}
+    // console.log(playersTurn(PLAYER2));
+//}
