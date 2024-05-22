@@ -21,21 +21,21 @@ class Game {
 
         const mergedRow = [];
 
-        for (let current = row.length; current > 0;) {
+        for (let current = row.length - 1; current >= 0;) {
             let next = current - 1;
 
             if (row[next] === row[current]) {
                 // Add the merged numbers to the new row and continue after them
-                mergedRow.push(row[current] * 2);
+                mergedRow.unshift(row[current] * 2);
                 current = next - 1;
             } else {
                 // Push only the current number to the new row and continue at the next
-                mergedRow.push(row[current]);
+                mergedRow.unshift(row[current]);
                 current = next;
             }
         }
 
-        //while (mergedRow.length < this.row.length) mergedRow.unshift(0);
+        while (mergedRow.length < this.row.length) mergedRow.unshift(0);
 
         return mergedRow;
     }
